@@ -1,6 +1,7 @@
 /*************************************************************************
  *  Compilation:  javac PennDraw.java
  *  Execution:    java PennDraw
+ *  Dependencies: In.java
  *
  *  Standard drawing library. This class provides a basic capability for
  *  creating drawings with your programs. It uses a simple graphics model that

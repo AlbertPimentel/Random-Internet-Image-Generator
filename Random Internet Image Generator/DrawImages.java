@@ -1,11 +1,13 @@
 /******************************************************************************
  *  Compilation:  javac DrawImages.java
  *  Execution:    java DrawImages
- *  Dependencies: RandomImage
+ *  Dependencies: RandomImage.java, PennDraw.java
  *
  *  Draws 9 random images parsed from the HTML data of over 10,000 possible
- *  websites.
- *
+ *  websites, found by appending random English words to the standard application
+ *  protocol.
+ * 
+ *  Version 1.01
  ******************************************************************************/
 import java.awt.Image;
 import java.io.IOException;
@@ -18,16 +20,6 @@ import java.awt.Toolkit;
 import java.awt.Dimension;
 
 public class DrawImages {
-  /*
-   * Description: Draws 9 images which were parsed from the HTML
-   *              data of over 10,000 possible websites, found by
-   *              appending random English words to the standard
-   *              application protocol.
-   *                         
-   * Inputs: A String array.
-   *          
-   * Output: None.
-   */
   public static void main(String[] args) throws Exception {
     System.setProperty("http.agent", "Chrome");
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -45,20 +37,19 @@ public class DrawImages {
     }
   }
   
-  /*
-   * Description: 
-   *              
-   *                         
-   * Inputs: Four doubles, indicating the images x and y positions,
-   *         and width and height, in pixels.
-   *          
-   * Output: None.
+  /**
+   * Draws a random image at an inputted location and of an
+   * inputted size.
+   * @param xPos, image's x position
+   * @param yPos, image's y position
+   * @param width, image's width in pixels
+   * @param height, image's height in pixels
    */
-  public static void drawImage(double xPos, 
+  private static void drawImage(double xPos, 
                                double yPos, double width, double height) throws Exception {
     while(true) {
       try { RandomImage img = new RandomImage();
-      URL url = new URL(img.link);
+      URL url = new URL(img.getLink());
       Image image = ImageIO.read(url.openStream());
       PennDraw.picture(xPos, yPos, image, width, height, 0);
       return;

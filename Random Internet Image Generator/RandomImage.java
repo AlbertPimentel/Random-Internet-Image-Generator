@@ -7,28 +7,27 @@
   *  word from a library of 10,001 English words and appending it to
   *  the standard Internet protocol suite.
   * 
+  *  Version 1.01
   ******************************************************************************/
 import java.net.*;
 import java.io.*;
 
 public class RandomImage {
-  public static String link;
+  private static String link;
   
   public RandomImage() throws Exception {
     this.link = generateUsableImageLink();
   }
   
-  /*
-   * Description: Generates a link to an image
-   *              parsed from the HTML data
-   *              of random sites. 
-   *                         
-   * Inputs: None. 
-   *          
-   * Output: A String, of the form "http://...png"
-   *         or "http://...jpg"
+  public String getLink() {
+    return this.link;
+  }
+  
+  /**
+   * Generates a link to an iamge parsed from the HTML
+   * data of random sites.
    */
-  public static String generateUsableImageLink() throws Exception {
+  private static String generateUsableImageLink() throws Exception {
     while(true) {
       String link = generatePossiblyUnusableLink();
       if(link.charAt(0) == 'h') {
@@ -44,17 +43,11 @@ public class RandomImage {
     }
   }
   
-  /*
-   * Description: Generates a parsed String ending in 
-   *              .png or .jpg that may or may not
-   *              be a usable link.     
-   * 
-   * Inputs: None. 
-   *          
-   * Output: A String, of the form "...png" or
-   *         "...jpg"
-   */ 
-  public static String generatePossiblyUnusableLink() throws Exception{
+  /**
+   * Generates a parsed String ending in .png
+   * or .jpg that may or may not be a usable image link.
+   */
+  private static String generatePossiblyUnusableLink() throws Exception{
     String html = generateHtmlWithImage();
     int endQuoteLocation = hasImage(html);
     String imageLink = retrieveImageLink(html, endQuoteLocation);
@@ -62,16 +55,10 @@ public class RandomImage {
     
   }
   
-  /*
-   * Description: Generates HTML data from
-   *              a random website.
-   *                          
-   * Inputs: None.
-   *          
-   * Output: A String, containing all of the HTML 
-   *         data parsed from a random website.
+  /**
+   * Generates HTML data from a random website.
    */
-  public static String generateHtmlWithImage() throws Exception {
+  private static String generateHtmlWithImage() throws Exception {
     while(true) {
       String html = obtainWorkingHtml();
       if(hasImage(html) != -1) {
@@ -81,19 +68,15 @@ public class RandomImage {
     }
   }
   
-  /*
-   * Description: Takes in HTML data and the character
-   *              place at which an image file terminates
-   *              (where the "g" in "jpg" or "png" is)
-   * 
-   * Inputs: A String, A Website's entire HTML data,
-   *         An integer: The character place of the "g"
-   *         in an image element's "jpg" or "png" ending),
-   *         
-   * Output: A String, the link to the image found in the
-   *         HTML String, which ends at the inputted integer.
+  /**
+   * Takes in HTML data and the charactere place at
+   * which an image file terminates (where the "g" in "jpg"
+   * or "png" is).
+   * @param html, a website's entire HTML data as a String
+   * @param endQuoteLocation, the character place of the "g"
+   * in an image element's "jpg" or "png" ending
    */
-  public static String retrieveImageLink(String html, int endQuoteLocation) {
+  private static String retrieveImageLink(String html, int endQuoteLocation) {
     int startQuoteLocation = 0;
     for(int i = endQuoteLocation - 4; i > endQuoteLocation - 1000; i--) {
       if(html.charAt(i) + 0 == 34) {
@@ -110,18 +93,11 @@ public class RandomImage {
     
   }
   
-  /*
-   * Description: Checks if HTML data has an image.
-   * 
-   * Inputs: A String, HTML data. 
-   *          
-   * Output: An integer, -1 indicating that the
-   *         inputted HTML has no image link. Any
-   *         other integer indicating the character
-   *         place at which that image link ends
-   *         (the "g" in "png" or "jpg")
+  /**
+   * Checks if HTML data has an image.
+   * @param html, any HTML data represented as a String
    */
-  public static int hasImage(String html) {
+  private static int hasImage(String html) {
     for(int i = 0; i < html.length(); i++) {
       // Is there a period?
       if(html.charAt(i) + 0 == 46) {
@@ -153,16 +129,12 @@ public class RandomImage {
     
   }
   
-  /*
-   * Description: Generates random words until
-   *              HTML data is parsed from a website
-   *              made by appending said random word.    
-   * 
-   * Inputs: None. 
-   *          
-   * Output: A String, random HTML data.
+  /**
+   * Generates random words from a list of 10001 words
+   * until HTML data is parsed from a website made by
+   * appending said random word to "http://www." and ".com"
    */
-  public static String obtainWorkingHtml() throws Exception {
+  private static String obtainWorkingHtml() throws Exception {
     while(true) {
       try {
         String randomUrl = "https://www." + randomWord() + ".com";
@@ -172,16 +144,12 @@ public class RandomImage {
       }
     }
   }
-  
-  /*
-   * Description: Retrieves HTML data
-   *              from a given link, if available.
-   *                            
-   * Inputs: A String, the link to a website. 
-   *          
-   * Output: A String, HTML data.
-   */ 
-  public static String getHtmlFromUrl(String url) throws Exception {
+    
+  /**
+   * Retrieves HTML data from a given link, if available.
+   * @param url, the link to a website
+   */
+  private static String getHtmlFromUrl(String url) throws Exception {
     URL urlObj = new URL(url);
     BufferedReader in = new BufferedReader(new InputStreamReader(urlObj.openStream()));
     String html = ""; 
@@ -194,16 +162,11 @@ public class RandomImage {
     
   }
   
-  /*
-   * Description: Generates a random word from
-   *              a text file of 10,001 English
-   *              words.                         
-   * 
-   * Inputs: None.
-   *          
-   * Output: A String, a random word.
+  /**
+   * Generates a random word from a text file of
+   * 10,001 English words.
    */
-  public static String randomWord() {
+  private static String randomWord() {
     In inStream = new In("10001words.txt");
     String allWords = inStream.readAll();
     int rndmLineBreaks = (int) (Math.random() * 10002);
@@ -217,19 +180,14 @@ public class RandomImage {
     
   }
   
-  /*
-   * Description: Finds the character place of the first
-   *              character of a word chosen after a random
-   *              number of words or line break characters.
-   *                      
-   * Inputs:  An integer, the number of line break characters
-   *          to be passed before reaching the word. A String,
-   *          the text in question.
-   * 
-   * Output: An integer, the character place of the first character in a 
-   *         randomly selected word.
+  /**
+   * Finds the character place of the first character of a word chosen after
+   * a random number of words or line break characters.
+   * @param numLineBreaks, the number of line break characters to be passed
+   * before reaching the word
+   * @param text, the text being parsed
    */
-  public static int getFirstLetter(int numLineBreaks, String text) {
+  private static int getFirstLetter(int numLineBreaks, String text) {
     int lineBreakCounter = 0;
     for(int i = 0; i < text.length(); i++) {
       if(text.charAt(i) + 0 == 10) {
@@ -244,19 +202,14 @@ public class RandomImage {
     
   }
   
-  /*
-   * Description: Finds the character place of the last
-   *              character of a word chosen after a random
-   *              number of words or line break characters.    
-   * 
-   * Inputs: An integer, the character place of the first 
-   *         character in a given word. A String, the text in which 
-   *         that word occurs.
-   * 
-   * Output: An integer, the character place of the last character in 
-   *         a randomly selected word. 
+  /**
+   * Finds the character place of the last character of a word
+   * chosen after a random numer of words or line break characters.
+   * @param firstLetter, the character place of the first character
+   * in a given word
+   * @param text, the text in which that word occurs
    */
-  public static int getLastLetter(int firstLetter, String text) {
+  private static int getLastLetter(int firstLetter, String text) {
     for(int i = firstLetter; i < firstLetter + 20; i++) {
       if(text.charAt(i) + 0 == 10) {
         return i - 1;
